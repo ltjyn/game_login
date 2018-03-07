@@ -1,0 +1,31 @@
+<?php
+
+$host='120.26.12.162';
+$user='root';
+$passwd='aaaa';
+// 链接远程服务器
+$connection = ssh2_connect($host, 22);
+if (!$connection) die('connection to '.$host.':22 failed');
+
+// 获取验证方式并打印
+$auth_methods = ssh2_auth_none($connection, $user);
+
+if (in_array('password', $auth_methods ))
+{   // 通过password方式登录远程服务器   
+	if (ssh2_auth_password($connection, $user, $passwd))
+    {
+        $scp = ssh2_scp_send($connection, '/var/www/yy_activity.txt', '/tmp/yy_activity.txt');
+        if(!$scp) die('scp to '.$host.':22 failed');
+        	//echo 'scp ok';
+        $tcmd='cd /data/star;ls -d */;';  
+        $stream = ssh2_exec($connection, $tcmd); // 执行php
+        stream_set_blocking($stream,true);  
+  		echo stream_get_contents($stream);
+    } 
+    else 
+    { 
+        die( $user.' login Failed<br/>'); 
+    } 
+}
+ 
+?>
