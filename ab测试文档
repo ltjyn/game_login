@@ -1,0 +1,250 @@
+总的来说ab工具ab小巧简单，上手学习较快，可以提供需要的基本性能指标，但是没有图形化结果，不能监控。因此ab工具可以用作临时紧急任务和简单测试。
+同类型的压力测试工具还有：webbench、siege、http_load等
+ab -k -c1000 -n1000 "http://192.168.0.32:5556/chn?m=chn"
+安装ab`
+yum -y install httpd-tools
+
+Usage: ab [options] [http[s]://]hostname[:port]/path
+下面我们对这些参数，进行相关说明。如下：
+-n   在测试会话中所执行的请求个数。默认时，仅执行一个请求。
+-c   一次产生的请求个数。并发数。
+-t   测试所进行的最大秒数。其内部隐含值是-n 50000，它可以使对服务器的测试限制在一个固定的总时间以内。默认时，没有时间限制。
+-p   包含了需要POST的数据的文件。
+-P   对一个中转代理提供BASIC认证信任。用户名和密码由一个:隔开，并以base64编码形式发送。无论服务器是否需要(即, 是否发送了401认证需求代码)，此字符串都会被发送。
+-T   POST数据所使用的Content-type头信息。
+-v   设置显示信息的详细程度-4或更大值会显示头信息，3或更大值可以显示响应代码(404,200等),2或更大值可以显示警告和其他信息。
+-V   显示版本号并退出。
+-w   以HTML表的格式输出结果。默认时，它是白色背景的两列宽度的一张表。
+-i   执行HEAD请求，而不是GET。
+-x   设置<table>属性的字符串。
+-X   对请求使用代理服务器。
+-y   设置<tr>属性的字符串。
+-z   设置<td>属性的字符串。
+-C   对请求附加一个Cookie:行。其典型形式是name=value的一个参数对，此参数可以重复。
+-H   对请求附加额外的头信息。此参数的典型形式是一个有效的头信息行，其中包含了以冒号分隔的字段和值的对(如,"Accept-Encoding:zip/zop;8bit")。
+-A   对服务器提供BASIC认证信任。用户名和密码由一个:隔开，并以base64编码形式发送。无论服务器是否需要(即,是否发送了401认证需求代码)，此字符串都会被发送。
+-h   显示使用方法。
+-d   不显示"percentage served within XX [ms] table"的消息(为以前的版本提供支持)。
+-e   产生一个以逗号分隔的(CSV)文件，其中包含了处理每个相应百分比的请求所需要(从1%到100%)的相应百分比的(以微妙为单位)时间。由于这种格式已经“二进制化”，所以比'gnuplot'格式更有用。
+-g   把所有测试结果写入一个'gnuplot'或者TSV(以Tab分隔的)文件。此文件可以方便地导入到Gnuplot,IDL,Mathematica,Igor甚至Excel中。其中的第一行为标题。
+-i   执行HEAD请求，而不是GET。
+-k   启用HTTP KeepAlive功能，即在一个HTTP会话中执行多个请求。默认时，不启用KeepAlive功能。
+-q   如果处理的请求数大于150，ab每处理大约10%或者100个请求时，会在stderr输出一个进度计数。此-q标记可以抑制这些信息。'
+
+四、ab性能指标
+在进行性能测试过程中有几个指标比较重要：
+1、吞吐率（Requests per second）
+	服务器并发处理能力的量化描述，单位是reqs/s，指的是在某个并发用户数下单位时间内处理的请求数。某个并发用户数下单位时间内能处理的最大请求数，称之为最大吞吐率。记住：吞吐率是基于并发用户数的。这句话代表了两个含义：
+	a、吞吐率和并发用户数相关
+	b、不同的并发用户数下，吞吐率一般是不同的
+	计算公式：总请求数/处理完成这些请求数所花费的时间，即
+	Request per second=Complete requests/Time taken for tests
+	必须要说明的是，这个数值表示当前机器的整体性能，值越大越好。
+2、并发连接数（The number of concurrent connections）
+	并发连接数指的是某个时刻服务器所接受的请求数目，简单的讲，就是一个会话。
+3、并发用户数（Concurrency Level）
+	要注意区分这个概念和并发连接数之间的区别，一个用户可能同时会产生多个会话，也即连接数。在HTTP/1.1下，IE7支持两个并发连接，IE8支持6个并发连接，FireFox3支持4个并发连接，所以相应的，我们的并发用户数就得除以这个基数。
+4、用户平均请求等待时间（Time per request）
+	计算公式：处理完成所有请求数所花费的时间/（总请求数/并发用户数），即：
+	Time per request=Time taken for tests/（Complete requests/Concurrency Level）
+5、服务器平均请求等待时间（Time per request:across all concurrent requests）
+	计算公式：处理完成所有请求数所花费的时间/总请求数，即：
+	Time taken for/testsComplete requests
+	可以看到，它是吞吐率的倒数。
+	同时，它也等于用户平均请求等待时间/并发用户数，即
+	Time per request/Concurrency Level
+
+
+ab -c 10 -n 100 http://a.ilanni.com/index.php
+-c10表示并发用户数为10
+-n100表示请求总数为100
+
+
+
+Siege 是Linux/Unix下的一个WEB系统的压力测试工具。
+
+下载与安装:
+
+下载地址: http://download.joedog.org/siege/ 目前最新版本是 2016-05-20 发布的 siege-4.0.2.tar.gz
+
+$ wget http://download.joedog.org/siege/siege-latest.tar.gz
+$ tar zxf siege-latest.tar.gz
+$ cd siege-4.0.2/
+$ ./configure
+$ sudo make
+$ sudo make install
+查看是否安装成功:
+
+查看siege安装路径:
+$ which siege
+/usr/local/bin/siege
+
+查看siege版本:
+$ siege -V
+SIEGE 4.0.2
+参数说明:
+
+可以使用"siege -h"命令来查看帮助信息:
+
+$ siege -h
+SIEGE 4.0.2
+Usage: siege [options]
+       siege [options] URL
+       siege -g URL
+Options:
+  -V, --version             VERSION, prints the version number.
+  -h, --help                HELP, prints this section.
+  -C, --config              CONFIGURATION, show the current config.
+  -v, --verbose             VERBOSE, prints notification to screen.
+  -q, --quiet               QUIET turns verbose off and suppresses output.
+  -g, --get                 GET, pull down HTTP headers and display the
+                            transaction. Great for application debugging.
+  -c, --concurrent=NUM      CONCURRENT users, default is 10
+  -r, --reps=NUM            REPS, number of times to run the test.
+  -t, --time=NUMm           TIMED testing where "m" is modifier S, M, or H
+                            ex: --time=1H, one hour test.
+  -d, --delay=NUM           Time DELAY, random delay before each requst
+  -b, --benchmark           BENCHMARK: no delays between requests.
+  -i, --internet            INTERNET user simulation, hits URLs randomly.
+  -f, --file=FILE           FILE, select a specific URLS FILE.
+  -R, --rc=FILE             RC, specify an siegerc file
+  -l, --log[=FILE]          LOG to FILE. If FILE is not specified, the
+                            default is used: PREFIX/var/siege.log
+  -m, --mark="text"         MARK, mark the log file with a string.
+                            between .001 and NUM. (NOT COUNTED IN STATS)
+  -H, --header="text"       Add a header to request (can be many)
+  -A, --user-agent="text"   Sets User-Agent in request
+  -T, --content-type="text" Sets Content-Type in request
+查看当前的配置信息
+$ siege -C
+使用说明:
+
+(1) 直接请求URL:
+
+$ siege -c 20 -r 10 http://www.cnwytnet.com
+参数说明： -c 是并发量，并发数为20人 -r 是重复次数， 重复10次
+
+(2) 随机选取urls.txt中列出所有的网址
+
+在当前目录下创建一个名为"urls-demo.txt"的文件。 文件里边填写URL地址，可以有多条，每行一条，比如：
+
+# URLs:
+http://www.sogou.com/web?query=php&from=wang_yong_tao
+https://www.baidu.com/
+// 执行 $ siege -c 5 -r 10 -f urls-demo.txt $ siege -c 5 -r 10 -f /Users/WangYoungTom/temp/urls-demo.txt
+
+参数说明： -c 是并发量，并发数为5人 -r 是重复次数， 重复10次 -f 指定使用文件，urls-demo.txt就是一个文本文件，每行都是一个url，会从里面随机访问的
+
+Siege从Siege-V2.06起支持POST和GET两种请求方式。 如果想模拟POST请求，可以在urls-demo.txt中安装一下格式填写URL:
+
+# URL （POST）:
+http://wangtest.com/index.php POST UserId=XXX&StartIndex=0&OS=Android&Sign=cff6wyt505wyt4c
+http://wangtest.com/articles.php POST UserId=XXX&StartIndex=0&OS=iOS&Sign=cff63w5905wyt4c
+使用示例:
+
+// 请求http://www.cnwytnet.com，并发人数为10，重复5次，每次请求间隔3秒
+$ siege --concurrent=10 --reps=5 --delay=3 http://www.cnwytnet.com
+$ siege -c 10 -r 5 -d 3 http://www.cnwytnet.com
+结果说明:
+
+Transactions: 153 hits (处理次数，本次处理了153此请求)
+Availability: 100.00 % (可用性/成功次数的百分比,比如本次100%成功)
+Elapsed time: 17.22 secs （运行时间，本次总消耗17.22秒）
+Data transferred: 7.70 MB （数据传送量）
+Response time: 0.17 secs （响应时间）
+Transaction rate: 8.89 trans/sec (处理请求频率，每秒钟处理8.89次请求）
+Throughput: 0.45 MB/sec （吞吐量,传输速度）
+Concurrency: 1.54 (实际最高并发连接数)
+Successful transactions: 153 (成功的传输次数)
+Failed transactions: 0 (失败的传输次数)
+Longest transaction: 0.70 (处理传输是所花的最长时间)
+Shortest transaction: 0.02 (处理传输是所花的最短时间)
+
+使用实例:
+
+$ siege -c 1000 -r 50 "http://192.168.0.32:5556/chn?m=chn"
+
+Transactions:               386 hits 			       // 总共测试次数
+Availability:               100.00 %			       //成功次数百分比
+Elapsed time:               37.40 secs		       总共耗时多少秒
+Data transferred:           19.47 MB			       总共数据传输
+Response time:              0.43 secs		         等到响应耗时
+Transaction rate:           10.32 trans/sec      平均每秒处理请求数
+Throughput:                 0.52 MB/sec          吞吐率
+Concurrency:                4.45			           最高并发
+Successful transactions:    386		               成功的请求数
+Failed transactions:        0                    失败的请求数
+Longest transaction:        2.38
+Shortest transaction:       0.02
+
+
+jmeter
+
+
+Label：     标签，即我们上面的请求名称
+#Samples：  本次场景中一共发出了多少个请求
+Average：   平均响应时间
+Median：    中位数，也就是50%的用户的响应时间
+90%Line：   表示90%的用户的响应时间，如果最小值和最大值相差很大的话，我们一般选择这个作为最终测试结果
+Min：       最小响应时间
+Max：       最大响应时间
+Error%：    出错率，本次测试中出现错误的请求的数量/请求的总数
+Throughput：吞吐量
+KB/sec：    每秒从服务器端接受到的数据量
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CA服务器
+cd /etc/pki/CA
+
+(umask 077;openssl genrsa -out private/cakey.pem 2048)
+
+vim /etc/ssl/openssl.cnf
+countryName_default             = AU
+stateOrProvinceName_default     = Some-State
+localityName_default            = Locality Name (eg, city)
+0.organizationName_default      = Internet Widgits Pty Ltd
+organizationalUnitName_default  =
+
+openssl req -new -x509 -key private/cakey.pem -out cacert.pem -days 3655
+
+[ CA_default ]
+
+dir             = /etc/pki/CA              # Where everything is kept
+certs           = $dir/certs            # Where the issued certs are kept
+crl_dir         = $dir/crl              # Where the issued crl are kept
+database        = $dir/index.txt        # database index file.
+
+
+mkdir certs crl newcerts 
+touch index.txt
+echo 01 > serial
+
+
+web服务器
+cd /etc/nginx/
+mkdir ssl
+cd ssl
+(umask 077; openssl genrsa 1024 >nginx.key)
+openssl req -new -key nginx.key -out nginx.csr
+
+
+CA服务器
+openssl ca -in /tmp/nginx.csr -out /tmp/nginx.csr -days 3650 -config /etc/ssl/openssl.cnf
+
+nslookup -q=TXT wanba.moltentec.com
