@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<NOTIFY>
+	<PHASE index="0" fontSize="24" colorR="255" colorG="255" colorB="255">
+		<LINE index="0" text="新版本于2014年6月25日中午12点正式上线；新服“S3 笑傲江湖”同步开启 ！"/>
+		<LINE index="1" text="官方客服QQ群: 16327728  287052675  362175928"/>
+		<LINE index="2" text="官方网站：gedou.qq.com"/>
+		<LINE index="3" text="微信公众账号：全民格斗"/>
+		<LINE index="4" text="腾讯微博：@qmgedou"/>
+	</PHASE>
+	<PHASE index="1" fontSize="24" colorR="255" colorG="255" colorB="0">
+		<LINE index="0" text="2014年6月25日更新内容如下："/>
+		<LINE index="1" text="1、优化了玩家的游戏引导体验。"/>
+		<LINE index="2" text="2、优化关卡开启展示，让玩家更加明确自己所打的关卡。"/>
+		<LINE index="3" text="3、增加QQ好友排行，QQ好友赠送体力设置，取消每日凌晨0点重置体力。"/>
+		<LINE index="4" text="4、增加活动界面，让玩家上线就能知道有哪些优惠活动。"/>
+		<LINE index="5" text="5、增加扫荡，当前副本打到三星即可进行扫荡。"/>
+		<LINE index="6" text="6、去掉七日目标。"/>
+		<LINE index="7" text="7、调整增加了开宝箱获得宝石的概率。"/>
+	</PHASE>
+	<PHASE index="2" fontSize="24" colorR="255" colorG="255" colorB="255">
+		<LINE index="0" text="2014年6月11日更新内容如下："/>
+		<LINE index="1" text="1、移除部分道具，被移除道具将会按照VIP1折扣价补偿到玩家的个人礼包。"/>
+		<LINE index="2" text="2、“S1 独步武林”服务器的“冲级赠送5级生命宝石活动”结束，奖励将在新版本中陆续发放。"/>
+		<LINE index="3" text="3、更新后“S1 独步武林”服务器将暂时关闭创建角色功能，该功能会在游戏正式公测后重新开放。"/>
+	</PHASE>
+</NOTIFY>
